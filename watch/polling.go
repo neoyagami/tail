@@ -75,7 +75,10 @@ func (fw *PollingFileWatcher) ChangeEvents(t *tomb.Tomb, pos int64) (*FileChange
 					changes.NotifyDeleted()
 					return
 				}
-
+				changes.NotifyDeleted()
+				return
+				// si no se puede stat un archivo se procede a indicar que se borro, previene 
+				// muertes del runtime cuando esto puede ser controlado por el sistema de manera mas facil
 				// XXX: report this error back to the user
 				util.Fatal("Failed to stat file %v: %v", fw.Filename, err)
 			}
